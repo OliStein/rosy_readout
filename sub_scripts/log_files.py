@@ -39,7 +39,7 @@ class Tee(object):
 
 class log_files():
     
-    # Setting up the log file in the directory where the script is saved
+    # Setting up the log_file and a log_files folder in the directory where the script is saved
     def log_file_set(self,path,name,pflag):
         g.tprinter('Initialising log file',pflag)
         if not os.path.exists(os.path.join(path,'log_files')):
@@ -48,14 +48,14 @@ class log_files():
         # Directory of the script 
         self.c_dir = path
         
-        # Directory of the script 
+        # Directory of the log_files 
         self.l_dir = os.path.join(path,'log_files')
         
         # Create time string
         self.creat_time = strftime("%Y%m%d_%H%M", localtime())
         
         # Path and name of the log file
-        self.log_file_path=os.path.join(path,'log_files',str(name)+'_'+self.creat_time+'.txt')
+        self.log_file_path = os.path.join(path,'log_files',str(name)+'_'+self.creat_time+'.txt')
         g.printer('log file path:',pflag)
         g.printer(self.log_file_path,pflag)
         
