@@ -47,11 +47,8 @@ class RosyClient(object):
     # '\nhello\n -> [\n, hello,\n][1]->'hello'  
     def rec (self,n,m,pflag):
 #         g.printer('waiting for server response.',pflag)
-        r = 0
-        lim = 0
-        lim_max =10
-        out = 0
-        # Wait loop, time out not jet working
+
+
     
         
         try:
@@ -177,9 +174,27 @@ class RosyClient(object):
         self.ret = self.rec(1024,1,pflag)
         self.dev_id = self.ret.split(':')[1]
         
+        time.sleep(1)
+        
         
         g.printer('Device id\n'+str(self.dev_id),pflag)
 #         g.printer(self.dev_id,pflag)
+
+    # New Histogram Module
+    def hist_new(self,pflag):
+        g.tprinter('New hist module',pflag)
+        self.s.send('function setMode\n')
+        self.s.send(str(self.dev_id)+'\n')
+        self.s.send('HISTOGRAM\n')
+        time.sleep(1)
+        res = self.s.recv(1024)
+        g.printer(res,pflag)
+        self.s.send('procedure setupHist\n')
+        self.s.send(str(self.dev_id)+'\n')
+        self.s.send('0.025\n')
+        time.sleep(1)
+        res = self.s.recv(1024)
+        g.printer(res,pflag)
    
     # Module for setting the threshold of the Histogram mode
     def hist_threshold(self,thresh,pflag):
@@ -209,6 +224,7 @@ class RosyClient(object):
         # Sets device with id dev_id to histogram mode
         self.mes = 'function setMode\n'+str(dev_id)+'\nHISTOGRAM\n' 
         self.sen(self.mes,pflag)
+        time.sleep(1)
         self.ret = self.rec(1024,1,pflag)
         time.sleep(1)
         
@@ -216,6 +232,7 @@ class RosyClient(object):
         # Sets the threshold for the device 
         self.mes = 'procedure setupHist\n'+str(self.dev_id)+'\n'+str(self.hist_threshold)+'\n' 
         self.sen(self.mes,pflag)
+        time.sleep(1)
         self.ret = self.rec(1024,1,pflag)
         
         time.sleep(1)
@@ -224,16 +241,30 @@ class RosyClient(object):
         # Arms the device 
         self.mes = 'procedure arm\n'+str(self.dev_id)+'\n' 
         self.sen(self.mes,pflag)
+        time.sleep(1)
         self.ret = self.rec(1024,1,pflag)
         
         time.sleep(1)
         # Command to server 
         # Requests the status of the device
-        self.mes = 'procedure getStatus\n'+str(self.dev_id)+'\n' 
+        self.mes = 'function getStatus\n'+str(self.dev_id)+'\n' 
         self.sen(self.mes,pflag)
-        self.ret = self.rec(1024,1,pflag)
-
-    
+        time.sleep(1)
+        rec = self.s.recv(1024)
+        g.printer(str(rec),pflag)
+#         for i in range(0,10):
+#             time.sleep(2)
+#             g.printer(str(i),pflag)
+#         self.ret = self.rec(1024,0,pflag)
+    def get_status(self,pflag):
+        g.tprinter('Requesting device status',pflag)
+        self.mes = 'function getStatus\n'+str(self.dev_id)+'\n' 
+        self.sen(self.mes,pflag)
+        time.sleep(1)
+        rec = self.s.recv(1024)
+        g.printer(str(rec),pflag)
+        return rec
+        
     # Module for retrieving histogram data from 
     def get_histdata(self,dev_id,pflag):
         g.tprinter('Requesting data from device '+str(dev_id),pflag)
@@ -242,9 +273,11 @@ class RosyClient(object):
         # Requests histogram data from device
         self.mes = 'function getHistData\n'+str(self.dev_id)+'\n' 
         self.sen(self.mes,pflag)
+        time.sleep(1)
         # Expecting data 
         self.ret = self.rec(1024**2,1,pflag)
         self.data = self.ret 
+        g.printer(self.data,pflag)
    
    
     # Module for stopping the acquisition 
@@ -254,14 +287,15 @@ class RosyClient(object):
         # Requests histogram data from device
         self.mes = 'procedure stopAcquistion\n'+str(self.dev_id)+'\n' 
         self.sen(self.mes,pflag)
+        time.sleep(1)
         # Expecting data 
         self.ret = self.rec(1024**2,1,pflag)
         self.data = self.ret
     
     
     # Module for releasing the device    
-    def releaseDevice(self,dev_id,pflag):
-        g.tprinter('Release device '+str(dev_id),pflag)
+    def release_device(self,pflag):
+        g.tprinter('Release device '+str(self.dev_id),pflag)
         
         # Command to server 
         # Requests histogram data from device
@@ -311,6 +345,7 @@ class RosyClient(object):
         g.printer('set Post Mortem parameters (channels, delay, ranges)',pflag)
         self.mes = 'procedure setupPostmortem\n'+str(self.dev_id)+'\n'+str(channel)+'\n'+str(delay)+'\n'+str(range_a)+'\n'+str(range_b)+'\n'+str(range_c)+'\n'+str(range_c)+'\n'+str(range_d)+'\n'  
         self.sen(self.mes,pflag)
+        time.sleep(1)
         self.ret = self.rec(1024,1,pflag)
         
         time.sleep(1)
@@ -320,21 +355,51 @@ class RosyClient(object):
         g.printer('arm the device',pflag)
         self.mes = 'procedure arm\n'+str(self.dev_id)+'\n' 
         self.sen(self.mes,pflag)
+        time.sleep(1)
         self.ret = self.rec(1024,1,pflag)
         
         
         # Loop requesting the status of the device
         # Indicates if there was a trigger event
-        g.printer('requesting status',pflag)
-        for i in range(10):
-            time.sleep(1)
-            # Command to server 
-            # Requests the status of the device
-            self.mes = 'procedure getStatus\n'+str(self.dev_id)+'\n' 
-            self.sen(self.mes,pflag)
-            self.ret = self.rec(1024,1,pflag)
+#         g.printer('requesting status',pflag)
+#         for i in range(10):
+#             time.sleep(1)
+#             # Command to server 
+#             # Requests the status of the device
+#             self.mes = 'procedure getStatus\n'+str(self.dev_id)+'\n' 
+#             self.sen(self.mes,pflag)
+#             self.ret = self.rec(1024,1,pflag)
         
-    # Closes the connection to the server        
+    # Closes the connection to the server  
+    def get_pmdata(self,pflag):
+        g.tprinter('Requesting data from device '+str(self.dev_id),pflag)
+        
+        # Command to server 
+        # Requests histogram data from device
+        self.mes = 'function getData\n'+str(self.dev_id)+'\n' 
+        self.sen(self.mes,pflag)
+        time.sleep(1)
+        # Expecting data 
+        self.ret = self.rec(1024**2,1,pflag)
+        self.data = self.ret 
+        g.printer(self.data,pflag)
+    
+    # Simple loop module requesting the device status
+    def get_status_loop(self,t,niter,pflag):
+        g.tprinter('Running get_status_loop',pflag)
+        g.printer('number of iterations '+str(niter),pflag)
+        for i in range(niter):
+            g.printer('requesting device status',pflag)
+            g.printer(str(i)+' iteration of '+str(niter),pflag)
+            out = self.get_status(0)
+            g.printer(str(out),pflag)
+            time.sleep(t)
+            
+        g.printer('ending get_status_loop',pflag)
+            
+        
+        
+              
     def close_connection(self,pflag):
         g.tprinter('closing server connection to:',pflag)
         g.printer('IP:'+str(self.ip),pflag)

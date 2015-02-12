@@ -23,3 +23,20 @@ Connecting to Cividec Readout system.
 	- When setting the Post Mortem parameters -> server response: 
 	  I didn't understand you. (This message is not expected)
 	- Further commands lead to time out error 
+
+12.02.2015
+- Problem:
+	time out or error message when setting up post mortem or histogram mode 
+	SOLVED
+
+- Solution:
+	forcing the script to sleep for a short time (1 second) before requesting the server answer
+
+- Modes and parameters can be set
+
+- Device can be armed
+
+- Status of the device can be requested
+
+- Problem:
+	No data transfer, device doesn't trigger
