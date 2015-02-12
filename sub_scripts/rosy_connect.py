@@ -359,16 +359,7 @@ class RosyClient(object):
         self.ret = self.rec(1024,1,pflag)
         
         
-        # Loop requesting the status of the device
-        # Indicates if there was a trigger event
-#         g.printer('requesting status',pflag)
-#         for i in range(10):
-#             time.sleep(1)
-#             # Command to server 
-#             # Requests the status of the device
-#             self.mes = 'procedure getStatus\n'+str(self.dev_id)+'\n' 
-#             self.sen(self.mes,pflag)
-#             self.ret = self.rec(1024,1,pflag)
+
         
     # Closes the connection to the server  
     def get_pmdata(self,pflag):
@@ -388,6 +379,7 @@ class RosyClient(object):
     def get_status_loop(self,t,niter,pflag):
         g.tprinter('Running get_status_loop',pflag)
         g.printer('number of iterations '+str(niter),pflag)
+        # Loop requesting the status of the device niter times and sleeps for t seconds
         for i in range(niter):
             g.printer('requesting device status',pflag)
             g.printer(str(i)+' iteration of '+str(niter),pflag)
