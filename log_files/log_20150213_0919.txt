@@ -1,0 +1,241 @@
+-------------------------------------------------------
+main.py Log_file
+
+Script_file dir: /Users/Oli/work/dBLM_readout/ROSY/rosy_readout
+Log_file dir: /Users/Oli/work/dBLM_readout/ROSY/rosy_readout/log_files
+Log_file name: log_20150213_0919.txt
+
+date: Fri, 13 Feb 2015
+time: 09:19:28
+
+-------------------------------------------------------
+
+
+
+--------------------------------------------------------------
+Setting server ip and port
+--------------------------------------------------------------
+
+server IP:137.138.196.78
+
+server port:3893
+
+
+--------------------------------------------------------------
+Setting time out
+--------------------------------------------------------------
+
+Timeout: 10s
+
+
+--------------------------------------------------------------
+Initialising ROSY connection
+--------------------------------------------------------------
+
+IP address: 137.138.196.78
+
+Port: 3893
+
+sending string to server: 
+hello
+
+
+
+Response from server:
+hello
+
+sending string to server: 
+version 1.0
+
+
+
+Response from server:
+welcome
+
+Connection established
+
+
+--------------------------------------------------------------
+Getting devices
+--------------------------------------------------------------
+
+sending string to server: 
+function getDevices
+
+
+
+Response from server:
+[{id:0,name:"pico6402-AT626/042",devHandler:1},]
+
+found devices:
+
+Device 1
+
+['id', 0]
+
+['name', '"pico6402-AT626/042"']
+
+['devHandler', 1]
+
+
+--------------------------------------------------------------
+Acquiring device 
+--------------------------------------------------------------
+
+sending string to server: 
+function acquireDevice
+0
+
+
+
+Response from server:
+id:rosy
+
+Device id
+rosy
+
+
+--------------------------------------------------------------
+Setting up post mortem mode
+--------------------------------------------------------------
+
+set device to Post Mortem mode
+
+sending string to server: 
+function setMode
+rosy
+POST_MORTEM
+
+
+
+Response from server:
+1
+
+set Post Mortem parameters (channels, delay, ranges)
+
+sending string to server: 
+procedure setupPostmortem
+rosy
+A
+0.004
+3
+3
+3
+3
+3
+
+
+
+Response from server:
+0
+
+arm the device
+
+sending string to server: 
+procedure arm
+rosy
+
+
+
+Response from server:
+0
+
+
+--------------------------------------------------------------
+Running get_status_loop
+--------------------------------------------------------------
+
+number of iterations 10
+
+requesting device status
+
+0 iteration of 10
+
+6
+READY
+
+
+requesting device status
+
+1 iteration of 10
+
+6
+READY
+
+
+requesting device status
+
+2 iteration of 10
+
+6
+READY
+
+
+requesting device status
+
+3 iteration of 10
+
+6
+READY
+
+
+requesting device status
+
+4 iteration of 10
+
+6
+READY
+
+
+requesting device status
+
+5 iteration of 10
+
+6
+READY
+
+
+requesting device status
+
+6 iteration of 10
+
+6
+READY
+
+
+requesting device status
+
+7 iteration of 10
+
+6
+READY
+
+
+requesting device status
+
+8 iteration of 10
+
+6
+READY
+
+
+requesting device status
+
+9 iteration of 10
+
+6
+READY
+
+
+ending get_status_loop
+
+
+--------------------------------------------------------------
+Requesting data from device rosy
+--------------------------------------------------------------
+
+sending string to server: 
+function getData
+rosy
+
+

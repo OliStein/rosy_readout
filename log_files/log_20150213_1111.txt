@@ -1,0 +1,229 @@
+-------------------------------------------------------
+main.py Log_file
+
+Script_file dir: /Users/Oli/work/dBLM_readout/ROSY/rosy_readout
+Log_file dir: /Users/Oli/work/dBLM_readout/ROSY/rosy_readout/log_files
+Log_file name: log_20150213_1111.txt
+
+date: Fri, 13 Feb 2015
+time: 11:11:33
+
+-------------------------------------------------------
+
+
+
+--------------------------------------------------------------
+Setting server ip and port
+--------------------------------------------------------------
+
+server IP:137.138.196.78
+
+server port:3893
+
+
+--------------------------------------------------------------
+Setting time out
+--------------------------------------------------------------
+
+Timeout: 10s
+
+
+--------------------------------------------------------------
+Initialising ROSY connection
+--------------------------------------------------------------
+
+IP address: 137.138.196.78
+
+Port: 3893
+
+sending string to server: 
+hello
+
+
+
+Response from server:
+hello
+
+sending string to server: 
+version 1.0
+
+
+
+Response from server:
+welcome
+
+Connection established
+
+
+--------------------------------------------------------------
+Getting devices
+--------------------------------------------------------------
+
+sending string to server: 
+function getDevices
+
+
+
+Response from server:
+[{id:0,name:"pico6402-AT626/042",devHandler:1},]
+
+found devices:
+
+Device 1
+
+['id', 0]
+
+['name', '"pico6402-AT626/042"']
+
+['devHandler', 1]
+
+
+--------------------------------------------------------------
+Acquiring device 
+--------------------------------------------------------------
+
+sending string to server: 
+function acquireDevice
+0
+
+
+
+Response from server:
+id:rosy
+
+Device id
+rosy
+
+
+--------------------------------------------------------------
+Set histogram threshold to:
+1
+--------------------------------------------------------------
+
+
+--------------------------------------------------------------
+Setting up histogram mode
+--------------------------------------------------------------
+
+Histogram threshold: 
+1
+
+sending string to server: 
+function setMode
+rosy
+HISTOGRAM
+
+
+
+Response from server:
+1
+
+sending string to server: 
+procedure setupHist
+rosy
+1
+
+
+
+Response from server:
+0
+
+sending string to server: 
+procedure arm
+rosy
+
+
+
+Response from server:
+0
+
+sending string to server: 
+function getStatus
+rosy
+
+
+6
+READY
+
+
+
+--------------------------------------------------------------
+Running get_status_loop
+--------------------------------------------------------------
+
+number of iterations 1
+
+requesting device status
+
+0 iteration of 1
+
+peng
+
+READY
+
+ending get_status_loop
+
+
+--------------------------------------------------------------
+Requesting data from device rosy
+--------------------------------------------------------------
+
+sending string to server: 
+function getHistData
+rosy
+
+
+
+Response from server:
+0
+
+0
+
+
+--------------------------------------------------------------
+Stopping the data acquisition on devicerosy
+--------------------------------------------------------------
+
+sending string to server: 
+procedure stopAcquistion
+rosy
+
+
+
+Response from server:
+Invalid command.
+
+
+--------------------------------------------------------------
+Release device rosy
+--------------------------------------------------------------
+
+sending string to server: 
+procedure releaseDevice
+rosy
+
+
+
+Response from server:
+
+
+
+--------------------------------------------------------------
+closing rosy connection
+--------------------------------------------------------------
+
+sending string to server: 
+byerosy
+
+
+
+--------------------------------------------------------------
+closing server connection to:
+--------------------------------------------------------------
+
+IP:137.138.196.78
+
+Port:3893
+
+connection closed
+
