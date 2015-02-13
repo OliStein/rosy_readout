@@ -76,9 +76,10 @@ rc.acquire_device(0,pflag)
 #--------------------------------
 
 # setting post mortem mode
-rc.pm_setup(rc.dev_id,pflag)
-
-rc.get_status_loop(2,10,pflag)
+# rc.pm_setup(rc.dev_id,pflag)
+ 
+# Requesting device status loop
+# rc.get_status_loop(2,10,pflag)
 
 # rc.get_pmdata(pflag)
 #--------------------------------
@@ -88,25 +89,25 @@ rc.get_status_loop(2,10,pflag)
 # rc.hist_new(pflag)
 
 # setting histogram threshold
-# rc.hist_threshold(1,pflag)
+rc.hist_threshold(1,pflag)
 # setting histogram mode
-# rc.hist_setup(rc.dev_id,pflag)
+rc.hist_setup(rc.dev_id,pflag)
 
-# for i in range(0,10):
-#     rc.get_status(pflag)
-#     g.printer('Iterator '+str(i),pflag)
-#     time.sleep(2)
+# Requesting device status loop
+rc.get_status_loop(1,10,pflag)
+
 
 
 # requesting histogrm data
-# rc.get_histdata(rc.dev_id,pflag)
+rc.get_histdata(rc.dev_id,pflag)
 
 #stops data acquistion
-# rc.stop_acquisition(rc.dev_id,pflag)
+rc.stop_acquisition(rc.dev_id,pflag)
 
 #releases the device, still connected to server 
 rc.release_device(pflag)
 
+rc.bye_rosy(pflag)
 # closes connection to server    
 rc.close_connection(pflag)
 

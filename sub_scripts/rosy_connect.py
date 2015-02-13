@@ -293,18 +293,8 @@ class RosyClient(object):
         self.data = self.ret
     
     
-    # Module for releasing the device    
-    def release_device(self,pflag):
-        g.tprinter('Release device '+str(self.dev_id),pflag)
-        
-        # Command to server 
-        # Requests histogram data from device
-        self.mes = 'procedure releaseDevice\n'+str(self.dev_id)+'\n' 
-        self.sen(self.mes,pflag)
-        
-        self.ret = self.rec(1024,1,pflag)
 
-    # MOdule for setting up the POST MORTEM mode
+    # Module for setting up the POST MORTEM mode
     def pm_setup(self,dev_id,pflag):
         g.tprinter('Setting up post mortem mode',pflag)
         
@@ -371,25 +361,53 @@ class RosyClient(object):
         self.sen(self.mes,pflag)
         time.sleep(1)
         # Expecting data 
-        self.ret = self.rec(1024**2,1,pflag)
+        self.ret = self.rec(1024**2,0,pflag)
         self.data = self.ret 
         g.printer(self.data,pflag)
     
     # Simple loop module requesting the device status
+    # Loop stops if get setatus returns READY
     def get_status_loop(self,t,niter,pflag):
         g.tprinter('Running get_status_loop',pflag)
         g.printer('number of iterations '+str(niter),pflag)
-        # Loop requesting the status of the device niter times and sleeps for t seconds
+        # Loop requesting the status of the device niter times and sleeps for t seconds 
         for i in range(niter):
             g.printer('requesting device status',pflag)
             g.printer(str(i)+' iteration of '+str(niter),pflag)
             out = self.get_status(0)
+            out = out.split('\n')[1]
+            # If the status of the device is READY, loop ends
+            if out == 'READY':
+                g.printer('Device status is READY \n exit loop',pflag)
+                break
+            else:
+                g.printer('Device NOT READY',pflag)
+            
             g.printer(str(out),pflag)
             time.sleep(t)
             
         g.printer('ending get_status_loop',pflag)
             
         
+    # Module for releasing the device    
+    def release_device(self,pflag):
+        g.tprinter('Release device '+str(self.dev_id),pflag)
+        
+        # Command to server 
+        # Requests histogram data from device
+        self.mes = 'procedure releaseDevice\n'+str(self.dev_id)+'\n' 
+        self.sen(self.mes,pflag)
+        time.sleep(1)
+        self.ret = self.rec(1024,1,pflag)
+        
+#         time.sleep(1)
+#         self.ret = self.rec(1024,0,pflag)
+        
+        
+    def bye_rosy(self,pflag):
+        g.tprinter('closing rosy connection',pflag)
+        self.mes = 'byerosy\n' 
+        self.sen(self.mes,pflag)
         
               
     def close_connection(self,pflag):
